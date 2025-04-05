@@ -1,13 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Plus, User, Clock, Frown } from "lucide-react";
+import { BattleRoomContext } from "../_context/battleRoomContext";
+import Popover from "./popover";
 
 const Battle = () => {
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [difficulty, setDifficulty] = useState("all");
-  const [roomType, setRoomType] = useState("all");
+  const { roomId, setRoomId, setRoomName, setRoomCreater, setRoomDifficulty, setRoomPlayers, setRoomMaxPlayers, setRoomProblems, setRoomStatus, setRoomCreatedAt } = useContext(BattleRoomContext);
+  const [isOpenPopover, setIsOpenPopover] = useState(false);
 
   // 模拟房间数据
   const rooms = [
@@ -16,8 +18,8 @@ const Battle = () => {
       name: "算法挑战赛",
       owner: "Pai Peng",
       difficulty: "中等",
-      players: 2,
-      maxPlayers: 4,
+      players: 1,
+      maxPlayers: 2,
       problems: 3,
       status: "waiting",
       createdAt: "2分钟前"
@@ -27,8 +29,8 @@ const Battle = () => {
       name: "每日刷题",
       owner: "Bob Wang",
       difficulty: "简单",
-      players: 3,
-      maxPlayers: 3,
+      players: 2,
+      maxPlayers: 2,
       problems: 5,
       status: "in-progress",
       createdAt: "15分钟前"
@@ -49,8 +51,8 @@ const Battle = () => {
       name: "周末刷题小组",
       owner: "John Doe",
       difficulty: "中等",
-      players: 4,
-      maxPlayers: 4,
+      players: 2,
+      maxPlayers: 2,
       problems: 4,
       status: "in-progress",
       createdAt: "1小时前"
@@ -60,8 +62,8 @@ const Battle = () => {
       name: "面试准备",
       owner: "Sarah Li",
       difficulty: "中等",
-      players: 2,
-      maxPlayers: 6,
+      players: 1,
+      maxPlayers: 2,
       problems: 5,
       status: "waiting",
       createdAt: "3小时前"
@@ -70,20 +72,37 @@ const Battle = () => {
 
   // 加入房间
   const joinRoom = (roomId: string) => {
+    const room = rooms.find(r => r.id === roomId);
+    if (!room) return;
+    
+    console.log("Joining room:", room); // 添加调试日志
+    
+    // 确保在 useEffect 外设置Context值
+    setRoomId(roomId);
+    setRoomName(room.name);
+    setRoomCreater(room.owner);
+    setRoomDifficulty(room.difficulty);
+    setRoomPlayers(room.players);
+    setRoomMaxPlayers(room.maxPlayers);
+    setRoomProblems(room.problems);
+    setRoomStatus(room.status);
+    setRoomCreatedAt(room.createdAt);
+    
     router.push(`/battle/${roomId}`);
   };
 
   return (
     <div className="flex flex-col h-full">
+      <Popover isOpen={isOpenPopover} onClose={() => setIsOpenPopover(false)} />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-[#333333]">Select / Create Room</h1>
         <button
-          onClick={() => router.push('/battle/create')}
+          onClick={() => {
+            setIsOpenPopover(true);
+          }}
           className="bg-[#f8a201] hover:bg-[#e59400] px-4 py-2 rounded-lg text-white font-medium transition-colors flex items-center"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-          </svg>
+          <Plus className="h-5 w-5 mr-2" />
           Create Room
         </button>
       </div>
@@ -105,9 +124,7 @@ const Battle = () => {
 
                 <div className="flex items-center mb-2 text-sm text-[#808080]">
                   <div className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
+                    <User className="h-4 w-4 mr-1" />
                     <span>Creator: {room.owner}</span>
                   </div>
                   <div className="mx-3">•</div>
@@ -135,7 +152,7 @@ const Battle = () => {
                         : 'bg-[#0f4b6e] text-white hover:bg-[#0a3b5a]'
                       }`}
                   >
-                    {room.status === 'waiting' ? 'Join' : 'Watch'}
+                    {room.status === 'waiting' ? 'Join' : 'Waiting'}
                   </button>
                 </div>
               </div>
@@ -143,15 +160,11 @@ const Battle = () => {
           </div>
         ) : (
           <div className="text-center py-12 bg-white rounded-lg border border-[#dcdcdc]">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <Frown className="h-12 w-12 mx-auto text-gray-400 mb-4" />
             <p className="text-[#808080] text-lg">No rooms found</p>
             <div className="flex justify-center">
               <button className="bg-[#f8a201] hover:bg-[#e59400] px-4 py-2 rounded-lg text-white font-medium transition-colors flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                </svg>
+                <Plus className="h-5 w-5 mr-2" />
                 Create Room
               </button>
             </div>
