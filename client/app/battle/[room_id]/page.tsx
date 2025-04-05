@@ -46,6 +46,7 @@ const BattleRoom = () => {
 
   return (
     <div className="flex flex-col h-[100vh] w-full">
+      <Sidebar />
       {/* header */}
       <header className="flex justify-between items-center h-14 px-4 border-b border-[#dcdcdc] shadow-sm bg-white">
         <div className="flex items-center gap-3">
@@ -58,8 +59,8 @@ const BattleRoom = () => {
             <div className="flex items-center gap-2">
               <span className="text-lg font-semibold text-[#333333]">{roomName || "对战房间"}</span>
               <span className={`px-2 py-0.5 rounded-full text-xs ${participants.filter(p => p.status === "completed").length === 2 ? 'bg-red-100 text-red-800' :
-                  participants.some(p => p.status === "completed") ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-green-100 text-green-800'
+                participants.some(p => p.status === "completed") ? 'bg-yellow-100 text-yellow-800' :
+                  'bg-green-100 text-green-800'
                 }`}>
                 {participants.filter(p => p.status === "completed").length === 2 ? '已结束' :
                   participants.some(p => p.status === "completed") ? '部分完成' : '进行中'}
@@ -75,7 +76,7 @@ const BattleRoom = () => {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <button 
+          <button
             className="bg-[#f0f0f0] px-3 py-1.5 rounded-lg flex items-center text-[#333333] font-medium"
             onClick={() => {
               window.dispatchEvent(new Event("openSidebar"));
@@ -119,21 +120,17 @@ const BattleRoom = () => {
           </div>
         </div>
       </header>
-      
-      {/* 主要内容区 - 现在使用flex布局将侧边栏和主内容区分开 */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* 侧边栏 */}
-        <Sidebar />
-        
+
+      <main className="flex flex-1 overflow-hidden">
         {/* 主要对战内容区 */}
-        <main className="flex-1 p-4 overflow-auto">
+        <div className="flex-1 p-4 overflow-auto">
           <div className="bg-white p-4 rounded-lg border border-[#dcdcdc] shadow-sm h-full">
             {/* 这里可以放置对战代码编辑器等内容 */}
             <h2 className="text-lg font-semibold mb-4">代码对战区</h2>
             <p className="text-gray-500">在这里编写你的代码...</p>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

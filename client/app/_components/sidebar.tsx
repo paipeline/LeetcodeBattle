@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import { BattleRoomContext } from "../_context/battleRoomContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, User, Clock, Award, Code, BookOpen, Users, BarChart } from "lucide-react";
 
 // 模拟题目
@@ -10,6 +10,8 @@ const Sidebar = () => {
   const { roomId, roomName, roomCreater, roomDifficulty, roomPlayers, roomMaxPlayers, roomProblems, roomStatus, roomCreatedAt } = useContext(BattleRoomContext);
   const [isOpen, setIsOpen] = useState(true);
   const [isFullyOpen, setIsFullyOpen] = useState(true);
+  const [sidebarWidth, setSidebarWidth] = useState(350);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   const toggleSidebar = () => {
     if (!isOpen) {
@@ -37,8 +39,38 @@ const Sidebar = () => {
     }
   }, []);
 
-  return (
-    <div className={`absolute right-0 ${isOpen ? 'w-[350px]' : 'w-0'} bg-[rgba(255,255,255,0.4)] backdrop-blur-sm backdrop-filter shadow-sm transition-all duration-200 flex flex-col`}>
+  const handleResize = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startWidth = sidebarWidth;
+  
+    if (sidebarRef.current) {
+      sidebarRef.current.style.transition = 'none';
+    }
+  
+    const handleMouseMove = (e: MouseEvent) => {
+      const newWidth = Math.max(350, startWidth - (e.clientX - startX));
+      setSidebarWidth(newWidth);
+    };
+  
+    const handleMouseUp = () => {
+      if (sidebarRef.current) {
+        sidebarRef.current.style.transition = '';
+      }
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }
+
+  return ( 
+    <div 
+      ref={sidebarRef}
+      className="absolute right-0 h-full bg-[rgba(255,255,255,0.4)] backdrop-blur-sm backdrop-filter shadow-sm transition-all duration-200 flex flex-col"
+      style={{ width: isOpen ? `${sidebarWidth}px` : '0' }}
+    >
       {/* 侧边栏头部 */}
       <div className="h-14 flex items-center justify-between px-4">
         <h2 className={`font-semibold text-[#333333] ${isFullyOpen ? 'opacity-100' : 'opacity-0'} transition-all duration-200`}>房间信息</h2>
@@ -49,7 +81,6 @@ const Sidebar = () => {
           <ChevronLeft className="w-4 h-4" />
         </button>
       </div>
-
       {/* 侧边栏内容 */}
       <div className={`flex-1 overflow-y-auto p-4 ${isFullyOpen ? 'opacity-100' : 'opacity-0'} transition-all duration-200`}>
         <div className="bg-[#f9f9f9] rounded-lg p-3">
@@ -78,8 +109,15 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
+      {/* handle */}
+      <div 
+        className="absolute left-0 top-0 h-full w-2 cursor-col-resize hover:bg-[#f8a20133] active:bg-[#f8a20166] transition-colors"
+        onMouseDown={handleResize}
+        onDoubleClick={() => setSidebarWidth(350)}
+        style={{ touchAction: 'none' }}
+      />
     </div>
-  );
+   );
 };
 
 export default Sidebar;
