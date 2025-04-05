@@ -53,10 +53,10 @@ const BattleRoom = () => {
   const [opponentCode, setOpponentCode] = useState("// 对手正在编写代码...\n// 当他们提交后你可以看到他们的代码");
 
   return (
-    <div className="flex flex-col h-[100vh] w-full bg-gradient-to-br from-white to-[#f5f7fa]">
+    <div className="flex flex-col h-[100vh] w-full bg-gradient-to-br from-white to-[#f5f7fa] shadow-md">
       <Sidebar />
       {/* 顶部导航栏 */}
-      <header className="flex justify-between items-center h-14 px-4 border-b border-[#e8edf2] shadow-sm bg-white">
+      <header className="flex justify-between items-center h-14 px-4 shadow-md border-b border-[#dcdcdc] bg-white">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 cursor-pointer hover:bg-[#f0f5fa] rounded-full p-2 transition-colors">
             <button onClick={() => router.back()}>

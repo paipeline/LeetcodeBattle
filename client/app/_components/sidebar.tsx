@@ -18,12 +18,12 @@ const Sidebar = () => {
       setIsOpen(true);
       setTimeout(() => {
         setIsFullyOpen(true);
-      }, 300);
+      }, 0);
     } else {
       setIsFullyOpen(false);
       setTimeout(() => {
         setIsOpen(false);
-      }, 300);
+      }, 100);
     }
   }
 
