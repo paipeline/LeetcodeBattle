@@ -3,12 +3,12 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import Problem from "../_components/problem";
 import Leaderboard from "../_components/leaderboard";
-import BattleRoom from "../_components/battleRoom";
+import BattleRoom from "../_components/battle";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Battle = () => {
-  const [pageIndex, setPageIndex] = useState(1);
-  const [prevIndex, setPrevIndex] = useState(1);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState(0);
 
   useEffect(() => {
     setPrevIndex(pageIndex);
@@ -29,7 +29,7 @@ const Battle = () => {
           </div>
           <nav className="hidden md:flex ml-8 space-x-6">
             <div className="flex items-center space-x-4">
-              <Link href="/dashboard" className="text-[#808080] hover:text-[#000000] transition-colors">Home</Link>
+              <Link href="/" className="text-[#808080] hover:text-[#000000] transition-colors">Home</Link>
             </div>
             <div className="bg-white border-b border-[#dcdcdc] px-4 py-1">
               <div className="flex space-x-8">
@@ -60,9 +60,6 @@ const Battle = () => {
           <div />
         </div>
         <div className="flex items-center space-x-4">
-          <button className="bg-[#f8a201] hover:bg-[#e59400] px-5 py-2 rounded-xl text-white text-sm font-semibold transition-colors">
-            New Battle
-          </button>
           <div className="relative">
             <button
               className="flex items-center space-x-2"

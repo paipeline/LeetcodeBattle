@@ -1,9 +1,7 @@
-"use client";
-
 const BattleRoom = () => {
   return ( 
-    <div>
-      <h1>Battle Room</h1>
+    <div className="flex flex-col h-full w-full bg-amber-300">
+asdf
     </div>
   );
 }
