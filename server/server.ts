@@ -5,6 +5,11 @@ import cors from 'cors';
 import path from 'path';
 import authRouter from './routes/auth';
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import { connectDB } from './db';
+import usersRouter from './routes/users';
+import userFriendsRouter from './routes/userFriends';
+import problemsRouter from './routes/problems';
+import battleRoomsRouter from './routes/battleRooms';
 
 // Load environment variables
 dotenv.config();
@@ -19,7 +24,27 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Auth router
-app.use(authRouter);
+mongoose.connect(process.env.MONGO_URI!, {
+  serverApi: {
+    version: '1',
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+app.use('/auth', authRouter);
+
+// Connect to MongoDB
+connectDB().catch(err => {
+  console.error('Failed to connect to MongoDB:', err);
+  process.exit(1);
+});
+
+// Routes
+app.use('/auth', authRouter);
+app.use('/users', usersRouter);
+app.use('/users-friends', userFriendsRouter);
+app.use('/problems', problemsRouter);
+app.use('/battle-rooms', battleRoomsRouter);
 
 // Update MongoDB connection
 const uri = process.env.MONGO_URI;
@@ -29,7 +54,7 @@ if (!uri) {
 
 mongoose.connect(uri, {
   serverApi: {
-    version: ServerApiVersion.v1,
+    version: '1',
     strict: true,
     deprecationErrors: true,
   }

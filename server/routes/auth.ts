@@ -1,7 +1,6 @@
 import { auth } from 'express-openid-connect';
 import { Router } from 'express';
 import dotenv from 'dotenv';
-import { requiresAuth } from 'express-openid-connect';
 
 dotenv.config();
 
@@ -24,13 +23,4 @@ router.get('/', (req, res) => {
   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
 
-
-router.get('/profile', requiresAuth(), (req, res) => {
-    res.send(JSON.stringify(req.oidc.user));
-  });
-
 export default router;
-
-
-
-
