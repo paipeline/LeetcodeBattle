@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { SlidersHorizontal, Search, Frown } from "lucide-react";
 
 // 题目类型定义
 interface ProblemType {
@@ -272,9 +273,7 @@ const Problem = () => {
             onClick={() => setShowFilters(!showFilters)}
             className="md:hidden px-3 py-1.5 border border-[#dcdcdc] rounded-lg flex items-center text-sm hover:bg-[#f0f0f0]"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-            </svg>
+            <SlidersHorizontal className="h-4 w-4 mr-1" />
             Filter
           </button>
           <div className="relative">
@@ -285,9 +284,7 @@ const Problem = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="px-3 py-1.5 border border-[#dcdcdc] rounded-lg pl-9 w-60 focus:outline-none focus:ring-2 focus:ring-[#f8a201] focus:border-transparent"
             />
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400 absolute left-3 top-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+            <Search className="h-4 w-4 text-gray-400 absolute left-3 top-2" />
           </div>
         </div>
       </div>
@@ -450,9 +447,7 @@ const Problem = () => {
               ))
             ) : (
               <div className="text-center py-12">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <Frown className="h-12 w-12 mx-auto text-gray-400 mb-4" />
                 <p className="text-gray-500">No matching problems found</p>
                 <button 
                   onClick={() => {
