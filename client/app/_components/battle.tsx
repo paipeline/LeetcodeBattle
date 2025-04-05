@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, User, Clock, Frown } from "lucide-react";
 import { BattleRoomContext } from "../_context/battleRoomContext";
+import Popover from "./popover";
 
 const Battle = () => {
   const router = useRouter();
   const { roomId, setRoomId, setRoomName, setRoomCreater, setRoomDifficulty, setRoomPlayers, setRoomMaxPlayers, setRoomProblems, setRoomStatus, setRoomCreatedAt } = useContext(BattleRoomContext);
+  const [isOpenPopover, setIsOpenPopover] = useState(false);
 
   // 模拟房间数据
   const rooms = [
@@ -91,10 +93,13 @@ const Battle = () => {
 
   return (
     <div className="flex flex-col h-full">
+      <Popover isOpen={isOpenPopover} onClose={() => setIsOpenPopover(false)} />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-[#333333]">Select / Create Room</h1>
         <button
-          onClick={() => router.push('/battle/create')}
+          onClick={() => {
+            setIsOpenPopover(true);
+          }}
           className="bg-[#f8a201] hover:bg-[#e59400] px-4 py-2 rounded-lg text-white font-medium transition-colors flex items-center"
         >
           <Plus className="h-5 w-5 mr-2" />
