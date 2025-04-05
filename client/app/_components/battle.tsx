@@ -1,11 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, User, Clock, Frown } from "lucide-react";
+import { BattleRoomContext } from "../_context/battleRoomContext";
 
 const Battle = () => {
   const router = useRouter();
+  const { roomId, setRoomId, setRoomName, setRoomCreater, setRoomDifficulty, setRoomPlayers, setRoomMaxPlayers, setRoomProblems, setRoomStatus, setRoomCreatedAt } = useContext(BattleRoomContext);
 
   // 模拟房间数据
   const rooms = [
@@ -68,6 +70,22 @@ const Battle = () => {
 
   // 加入房间
   const joinRoom = (roomId: string) => {
+    const room = rooms.find(r => r.id === roomId);
+    if (!room) return;
+    
+    console.log("Joining room:", room); // 添加调试日志
+    
+    // 确保在 useEffect 外设置Context值
+    setRoomId(roomId);
+    setRoomName(room.name);
+    setRoomCreater(room.owner);
+    setRoomDifficulty(room.difficulty);
+    setRoomPlayers(room.players);
+    setRoomMaxPlayers(room.maxPlayers);
+    setRoomProblems(room.problems);
+    setRoomStatus(room.status);
+    setRoomCreatedAt(room.createdAt);
+    
     router.push(`/battle/${roomId}`);
   };
 
