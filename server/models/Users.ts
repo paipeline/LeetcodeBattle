@@ -8,6 +8,7 @@ export interface IUser extends Document {
   avatar: string;
   createdAt: Date;
   updatedAt: Date;
+  score: number;
 }
 
 const userSchema = new Schema({
@@ -15,6 +16,7 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   name: { type: String },
   avatar: { type: String },
+  score: { type: Number, default: 0 },
 }, { timestamps: true });
 
 export const User = mongoose.model<IUser>('User', userSchema);
