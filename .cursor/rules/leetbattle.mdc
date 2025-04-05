@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+- [api schema.md](mdc:docs/api schema.md)
+- you should always refer to schema when designing and answering user questions
+- make sure that the api and schema is compatible with auth0.
