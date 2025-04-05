@@ -9,7 +9,9 @@ import { connectDB } from './db';
 import usersRouter from './routes/users';
 import userFriendsRouter from './routes/userFriends';
 import problemsRouter from './routes/problems';
-import battleRoomsRouter from './routes/battleRooms';
+import battleRoomsRouter from './routes/rooms';
+import * as swaggerUi from 'swagger-ui-express';
+import { specs } from './config/swagger';
 
 // Load environment variables
 dotenv.config();
@@ -44,7 +46,11 @@ app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/users-friends', userFriendsRouter);
 app.use('/problems', problemsRouter);
-app.use('/battle-rooms', battleRoomsRouter);
+app.use('/battle_rooms', battleRoomsRouter);
+
+// Swagger docs route
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', swaggerUi.setup(specs, { explorer: true }));
 
 // Update MongoDB connection
 const uri = process.env.MONGO_URI;
