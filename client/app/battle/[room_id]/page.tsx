@@ -75,6 +75,14 @@ const BattleRoom = () => {
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <button 
+            className="bg-[#f0f0f0] px-3 py-1.5 rounded-lg flex items-center text-[#333333] font-medium"
+            onClick={() => {
+              window.dispatchEvent(new Event("openSidebar"));
+            }}
+          >
+            <span>Problem</span>
+          </button>
           <div className="bg-[#f0f0f0] px-3 py-1.5 rounded-lg flex items-center text-[#333333] font-medium">
             <Clock className="w-4 h-4 mr-2 text-[#f8a201]" />
             <span>{timeLeft}</span>

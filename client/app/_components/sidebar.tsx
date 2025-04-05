@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import { BattleRoomContext } from "../_context/battleRoomContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, User, Clock, Award, Code, BookOpen, Users, BarChart } from "lucide-react";
 
 // 模拟题目
@@ -25,8 +25,20 @@ const Sidebar = () => {
     }
   }
 
+  useEffect(() => {
+    window.addEventListener("openSidebar", () => {
+      setIsOpen(true);
+      setTimeout(() => {
+        setIsFullyOpen(true);
+      }, 200);
+    });
+    return () => {
+      window.removeEventListener("openSidebar", () => {});
+    }
+  }, []);
+
   return (
-    <div className={`absolute right-0 h-full ${isOpen ? 'w-[350px]' : 'w-0'} bg-[rgba(255,255,255,0.4)] backdrop-blur-sm backdrop-filter shadow-sm transition-all duration-200 flex flex-col`}>
+    <div className={`absolute right-0 ${isOpen ? 'w-[350px]' : 'w-0'} bg-[rgba(255,255,255,0.4)] backdrop-blur-sm backdrop-filter shadow-sm transition-all duration-200 flex flex-col`}>
       {/* 侧边栏头部 */}
       <div className="h-14 flex items-center justify-between px-4">
         <h2 className={`font-semibold text-[#333333] ${isFullyOpen ? 'opacity-100' : 'opacity-0'} transition-all duration-200`}>房间信息</h2>
